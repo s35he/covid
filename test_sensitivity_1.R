@@ -21,10 +21,10 @@ C <- 5
 p1dirich <- rep(0.5, 5) + apply(array_allcont[1:initdays,,],3,sum)
 y <- array_allcont[-(1:initdays),,]
 
-# par(mfrow=c(3,3))
-# for (i in 1:9) {
-#   matplot(y[,i,], main=i)
-# }
+par(mfrow=c(3,3))
+for (i in 1:9) {
+  matplot(y[,i,], main=i)
+}
 
 data = list(N = N, CONT = CONT, N1 = N1, N2 = N2, N3 = N3, N4 = N4, T = Tl, C = C, y = y, p1dirich = p1dirich)
 stan_fit = stan("model_sensitivity_1_p1.stan",
@@ -36,13 +36,3 @@ stan_fit = stan("model_sensitivity_1_p1.stan",
 
 print(stan_fit, pars=c('alpha', 's0', 'p1', 'Sigma_NA', 'Omega_NA','Sigma_EU', 'Omega_EU','Sigma_AS', 'Omega_AS'),
       digits = 5)
-save(stan_fit, file="test_sensitivity_1_p1.rda")
-
-load("test_sensitivity_1_p1.rda")
-
-print(stan_fit, pars=c('alpha', 's0', 'p1', 'Sigma_NA', 'Omega_NA',
-                       'Sigma_EU', 'Omega_EU','Sigma_AS', 'Omega_AS'))
-a <- summary(stan_fit, pars=c('alpha', 'p1'))$summary
-xtable(a[,c(1,4,8)] ,digits=c(4,4,4,4))
-
-
